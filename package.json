@@ -1,0 +1,42 @@
+{
+  "name": "fullstack-skel-lite",
+  "version": "0.0.1",
+  "description": "Lightweight, bare-bones fullstack app template",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack",
+    "start": "npm run build && DEBUG='*' node build/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cval-c4q/fullstack-skel-lite.git"
+  },
+  "keywords": [
+    "Fullstack",
+    "Template",
+    "nodejs",
+    "Express",
+    "Webpack",
+    "Typescript"
+  ],
+  "author": "cval-c4q <carlovalenti@ac.c4q.nyc>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cval-c4q/fullstack-skel-lite/issues"
+  },
+  "homepage": "https://github.com/cval-c4q/fullstack-skel-lite#readme",
+  "dependencies": {
+    "@types/clone": "^0.1.30",
+    "@types/debug": "^0.0.30",
+    "@types/node": "^10.0.8",
+    "debug": "^3.1.0",
+    "shallow-clone": "^3.0.0",
+    "ts-loader": "^4.3.0",
+    "typescript": "^2.8.3",
+    "webpack": "^4.8.3"
+  },
+  "devDependencies": {
+    "webpack-cli": "^2.1.3"
+  }
+}
