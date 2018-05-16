@@ -10,9 +10,9 @@ Uses:
 ## Implementation details
 After building the repository with ```npm run build```, the ```build/``` subdirectory will contain the compiled code from the Backend and Frontend services as well as the Frontend Application itself, along with any other files necessary to deploy.
 
-The toplevel index.js is a Node.js script that is used to start both Front and Back-end services, each of which will be spawned in their own processes. Command-line switches are provided to start only one of the components in order to facilitate scenarios like delopyment on cloud platforms.
+The toplevel ```build/index.js``` is a Node.js script that is used to start both Front and Back-end services, each of which will be spawned in their own processes. Command-line switches are provided to start only one of the components in order to facilitate scenarios like delopyment on cloud platforms.
 
-There is only but one toplevel package.json where stack-wide dependencies are centralized and visible to both services and the Frontend App. This avoids unnecessary duplication, reduces build times as well as standardizes the tooling among all components.
+There is a single toplevel ```package.json``` where stack-wide dependencies are centralized and made visible to both services and the Frontend App. This avoids unnecessary duplication, reduces build times as well as standardizes the tooling among all components.
 
 ### ```src/``` subdirectory structure
 * ```src/index.ts```: toplevel entry point
