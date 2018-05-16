@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/cval-c4q/fullstack-skel-lite.svg?branch=master)](https://travis-ci.org/cval-c4q/fullstack-skel-lite)
 # fullstack-skel-lite
 Fullstack App template built from scratch to be clean and lightweight.
 
