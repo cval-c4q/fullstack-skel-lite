@@ -22,6 +22,7 @@ let _g: {
 	failureTally : Map<string, Array<number>>,
 	client?: child_process.ChildProcess,
 	server?: child_process.ChildProcess,
+	configDir: string,
 } = {
 	optClient : true,
 	optServer : true,
@@ -30,11 +31,11 @@ let _g: {
 	clientLastStart : -1,
 	serverLastStart : -1,
 	failureTally : new Map(),
+	configDir : process.env["CONFIG_DIR"] || path.dirname(process.argv[1]),
 };
 
 if (process.argv.length > 2)
 	process.argv.slice(2).forEach(arg => {
-		console.log(arg);
 		switch (arg) {
 			case "-C":
 			case "--client-only":
@@ -56,7 +57,9 @@ OPTIONS:
 
   -S
   --server-only    Do not initialize frontend service
-`)
+`);
+				if (arg == "--help")
+					process.exit(0);
 		}
 	});
 
