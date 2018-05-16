@@ -1,5 +1,7 @@
 
 const path = require("path");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 
 // Factored-out rule for Typescript+JSX preset
@@ -27,9 +29,29 @@ let frontServiceConf = {
 };
 
 /**
- *  Webpack target: frontend appication
+ *  Webpack target: frontend application
  */
 let frontAppConf = {
+	target: "web",
+	entry: "./src/app/index.ts",
+	output: {
+		path: path.resolve(__dirname, "build/front/static"),
+		filename: 'app.js',
+	},
+	module: {
+		rules: [ tsJsxRule ],
+	},
+	plugins: [
+		new HtmlWebpackPlugin(),
+		new CopyWebpackPlugin([
+			{
+				from: "**/*",
+				to: "./",
+				toType: "dir",
+				context: "src/app/static",
+			},
+		]),
+	],
 };
 
 /**
@@ -63,5 +85,5 @@ let rootConf = {
 };
 
 
-module.exports = [ frontServiceConf, backServiceConf, rootConf ];
+module.exports = [ frontServiceConf, frontAppConf, backServiceConf, rootConf ];
 
