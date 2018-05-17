@@ -9,9 +9,17 @@ const CopyWebpackPlugin = require("copy-webpack-plugin");
 const tsJsxRule = {
 	test: /\.tsx?$/,
 	exclude: /node_modules/,
-	use: 'ts-loader',
+	loader: 'ts-loader',
 };
 
+const tsLintRule = {
+	test: /\.tsx?$/,
+	enforce: 'pre',
+	exclude: /node_modules/,
+	loader: 'tslint-loader',
+	options: {
+	},
+};
 
 /**
  *  Webpack target: frontend service
@@ -24,7 +32,7 @@ let frontServiceConf = {
 		filename: 'index.js',
 	},
 	module: {
-		rules: [ tsJsxRule ],
+		rules: [ tsLintRule, tsJsxRule ],
 	},
 };
 
@@ -42,7 +50,7 @@ let frontAppConf = {
 		extensions: [ ".ts", ".tsx", ".js", ".jsx" ],
 	},
 	module: {
-		rules: [ tsJsxRule ],
+		rules: [ tsLintRule, tsJsxRule ],
 	},
 	plugins: [
 		new HtmlWebpackPlugin(),
@@ -73,7 +81,7 @@ let backServiceConf = {
 		filename: 'index.js',
 	},
 	module: {
-		rules: [ tsJsxRule ],
+		rules: [ tsLintRule, tsJsxRule ],
 	},
 };
 
@@ -88,7 +96,7 @@ let rootConf = {
 		filename: 'index.js',
 	},
 	module: {
-		rules: [ tsJsxRule ],
+		rules: [ tsLintRule, tsJsxRule ],
 	},
 };
 

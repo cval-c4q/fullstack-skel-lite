@@ -1,10 +1,9 @@
-/**
- *  Module imports */
+
 import debugM from "debug";
-const debug = debugM(`backend(${process.pid})`);
 import http from "http";
 import path from "path";
 
+const debug = debugM(`backend(${process.pid})`);
 
 /* Set-up sig handlers */
 function gracefulShutdown(signo: string) {
@@ -14,7 +13,6 @@ function gracefulShutdown(signo: string) {
 process.on("SIGTERM", gracefulShutdown.bind("SIGTERM"));
 process.on("SIGINT", gracefulShutdown.bind("SIGINT"));
 
-
 debug("service starting....");
 process.chdir(path.dirname(process.argv[1]));
 
@@ -22,5 +20,4 @@ process.chdir(path.dirname(process.argv[1]));
 setTimeout(() => {
 	debug("Randomly failing!");
 	process.exit(255);
-}, Math.random()*1000*60*60*12);
-
+}, Math.random() * 1000 * 60 * 60 * 12);

@@ -1,6 +1,8 @@
 
-import http from "http";
 import debugM from "debug";
+import http from "http";
+import path from "path";
+
 const debug = debugM(`frontend(${process.pid})`);
 
 debug("Service starting...");
@@ -12,10 +14,11 @@ function gracefulShutdown(signo: string) {
 	process.exit(0);
 }
 
+debug("service starting....");
+process.chdir(path.dirname(process.argv[1]));
 
 /** Simulate random fail within a 12h window */
 setTimeout(() => {
 	debug("Randomly failing.");
 	process.exit(255);
-}, Math.random()*1000*60*60*12);
-
+}, Math.random() * 1000 * 60 * 60 * 12);
