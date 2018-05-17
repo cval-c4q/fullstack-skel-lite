@@ -33,10 +33,13 @@ let frontServiceConf = {
  */
 let frontAppConf = {
 	target: "web",
-	entry: "./src/app/index.ts",
+	entry: "./src/app/index.tsx",
 	output: {
 		path: path.resolve(__dirname, "build/front/static"),
 		filename: 'app.js',
+	},
+	resolve: {
+		extensions: [ ".ts", ".tsx", ".js", ".jsx" ],
 	},
 	module: {
 		rules: [ tsJsxRule ],
@@ -52,6 +55,11 @@ let frontAppConf = {
 			},
 		]),
 	],
+/* TODO: enable for alternate build with support of browser modules
+	externals: {
+		"react": "React",
+		"react-dom": "ReactDOM",
+	}, */
 };
 
 /**
