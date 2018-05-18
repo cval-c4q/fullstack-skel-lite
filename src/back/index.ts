@@ -1,3 +1,6 @@
+/**
+ *  @file Entry point for the backend service
+ */
 
 import debugM from "debug";
 import http from "http";
@@ -9,7 +12,10 @@ const serv = http.createServer();
 
 let servPort: number = 5001;
 
-/* Set-up sig handlers */
+/**
+ *  Signal handler for SIGTERM and SIGINT, attempts a clean shutdown of the server
+ *  @param {string} signo - Signal that is being currently handled
+ */
 function gracefulShutdown(signo: string) {
 	debug(`Process received ${signo} signal. Attempting graceful shutdown...`);
 	serv.close();
@@ -21,6 +27,7 @@ process.on("SIGINT", gracefulShutdown.bind("SIGINT"));
 debug("service starting....");
 process.chdir(path.dirname(process.argv[1]));
 
+// Handle any command line configuration options
 process.argv.slice(2).forEach((opt: string, idx: number, arr: string[]) => {
 	switch (opt) {
 		case "--port":

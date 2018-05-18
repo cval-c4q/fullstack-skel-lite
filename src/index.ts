@@ -1,5 +1,5 @@
 /**
- *   Top-level entry point. Spawns back and front-end components.
+ *   @file Top-level entry point. Spawns back and front-end components.
  *   Each component will be respawn witin its own process.
  */
 
@@ -10,8 +10,10 @@ import path from "path";
 
 const debug = debugM(`toplevel(${process.pid})`);
 
-/*
- * Global state */
+/**
+ * @global
+ * Global state and runtime settings
+ */
 const _g: {
 	optClient: boolean,
 	optServer: boolean,
@@ -66,16 +68,29 @@ OPTIONS:
 }
 
 /**
- *  Spurious failure detection in case subsystems are failing too quick
+ * @constant
+ * @type {number}
+ * keep track of spurious failure of subprocesses within a time window of this
+ * many milliseconds
  */
-const FAILURE_WINDOW =
-	1000 *
-	60; // keep track of spurious failure of subprocesses within a time window
-	    // of this many milliseconds
-const CRITICAL_FAIL_THRESHOLD =
-	5; // if processes spuriously fail this many times within failure window,
-	   // abort execution, giving platform/system a shot at a clean restart
+const FAILURE_WINDOW = 1000 * 60;
 
+/**
+ * @constant
+ * @type {number}
+ * if processes spuriously fail this many times within failure window, abort
+ * execution, giving platform/system a shot at a clean restart
+ */
+const CRITICAL_FAIL_THRESHOLD = 5;
+
+/**
+ *  For the given child process and failure incident, a return value of true
+ *  indicates detection of spurious failure pattern.
+ *  @param {string} childHandle - Unique identifier for service
+ *  @param {number} timeStarted - UNIX time corresponding to when process was started
+ *  @param {number} timeEnded - UNIX time corresponding to when process exited
+ *  @return {bool} - Whether a pattern of spurious recurring failures is so far detected
+ */
 function detectSpuriousFail(childHandle: string, timeStarted: number, timeEnded: number): boolean {
 	const tally: number[] = _g.failureTally.get(childHandle) || [];
 
@@ -92,6 +107,9 @@ function detectSpuriousFail(childHandle: string, timeStarted: number, timeEnded:
 	return false;
 }
 
+/**
+ *  Helper to kill any running child processes, print a diagnostic and terminate
+ */
 function panicAbort() {
 	debug("Abnormal abort: shutting down...");
 	if (_g.client) {
