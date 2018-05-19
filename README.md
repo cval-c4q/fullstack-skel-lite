@@ -6,8 +6,8 @@ Fullstack App template built from scratch to be clean and lightweight.
 Uses:
   * [Node.js](https://nodejs.org) as server-side runtime.
   * [Webpack](https://webpack.js.org) to build the entire source tree, including network facing services and all App bundles and assets.
-  * [Typescript](https://www.typescriptlang.org) for static type checking and transpilation.
-  * [React](https://reactjs.org) and associated libraries for frontend UI Application, though this template should be adaptable to different libraries/frameworks.
+  * [Typescript](https://www.typescriptlang.org) for static type checking and transpilation, transpiles to ES6 (potential performance advantage).
+  * [React](https://reactjs.org) and associated libraries for frontend UI Application, though this template should be adaptable to other libraries/frameworks such as [Angular](https://angular.io) or standard HTML [Web Components](https://www.webcomponents.org).
 
 ## Implementation details
 After building the repository with ```npm run build```, the ```build/``` subdirectory will contain the compiled code from the Backend and Frontend services as well as the Frontend Application itself, along with any other files necessary to deploy.
