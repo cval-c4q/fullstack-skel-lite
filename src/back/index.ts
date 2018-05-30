@@ -10,7 +10,7 @@ import path from "path";
 const debug = debugM(`backend(${process.pid})`);
 const serv = http.createServer();
 
-let servPort: number = 5001;
+let servPort: number = 5001; // default
 
 /**
  *  Signal handler for SIGTERM and SIGINT, attempts a clean shutdown of the server
@@ -26,17 +26,20 @@ process.on("SIGINT", gracefulShutdown.bind("SIGINT"));
 
 debug("service starting....");
 process.chdir(path.dirname(process.argv[1]));
+debug("working directory: " + process.cwd());
 
 // Handle any command line configuration options
-process.argv.slice(2).forEach((opt: string, idx: number, arr: string[]) => {
-	switch (opt) {
-		case "--port":
-		case "-P":
-			if (idx >= arr.length - 1) {
-				process.stderr.write(`Option ${opt} expects an argument.\n`);
+const opts = process.argv.slice(2);
+for (let idx = 0; idx < opts.length; idx++) {
+	switch (true) {
+		case opts[idx] == "--port":
+		case opts[idx] == "-P":
+			if (idx >= opts.length - 1) {
+				process.stderr.write(`Option ${opts[idx]} expects an argument.\n`);
 				process.exit(255);
 			} else {
-				servPort = Number.parseInt(arr[idx + 1]);
+				servPort = Number.parseInt(opts[idx + 1]);
+				idx++;
 			}
 			break;
 		default:
@@ -44,13 +47,13 @@ process.argv.slice(2).forEach((opt: string, idx: number, arr: string[]) => {
 Usage: ${path.basename(process.argv[0])} [OPTIONS]
 OPTIONS:
 	--port, -P      Port to listen on\n`);
-			if (opt === "--help" || opt === "-h") {
+			if (opts[idx] === "--help" || opts[idx] === "-h") {
 				process.exit(0);
 			} else {
-				debug(`Unrecognized command line option: ${opt}\n`);
+				debug(`Unrecognized command line option: ${opts[idx]}\n`);
 			}
 	}
-});
+}
 
 serv.on("connection", (sock: net.Socket) => {
 	debug(`Established new connection from ${sock.remoteAddress} on TCP port ${sock.remotePort}`);
@@ -83,7 +86,7 @@ serv.on("request", (req: http.IncomingMessage, res: http.ServerResponse) => {
 });
 
 serv.listen(servPort, () => {
-	debug("Listening on port:", servPort);
+	debug("Listening on TCP port", servPort);
 });
 
 /** Simulate random fail within a 12h window */
