@@ -47,8 +47,8 @@ const _g: {
 	optServer: true,
 	serverEnv: clone(process.env),
 	serverLastStart: -1,
-	clientPort: 5000,	// hardcoded default
-	serverPort: 8000,	// hardcoded default
+	clientPort: 5001,	// hardcoded default
+	serverPort: 8001,	// hardcoded default
 };
 
 process.chdir(path.dirname(process.argv[1]));
@@ -66,7 +66,7 @@ try {
 	}
 
 	// backend port
-	if (_g.configObj.envMap && _g.configObj.envMap.BACK_SERVPORT) {
+	if (_g.configObj.envMap && _g.configObj.envMap.BACK_SERVPORT && process.env[_g.configObj.envMap.BACK_SERVPORT]) {
 		const val = process.env[_g.configObj.envMap.BACK_SERVPORT];
 		if (val !== undefined) {
 			const nval = parseInt(val, 10);
@@ -80,7 +80,7 @@ try {
 	debug("config.json: using backend TCP port setting value " + _g.serverPort);
 
 	// frontend port
-	if (_g.configObj.envMap && _g.configObj.envMap.FRONT_SERVPORT) {
+	if (_g.configObj.envMap && _g.configObj.envMap.FRONT_SERVPORT && process.env[_g.configObj.envMap.FRONT_SERVPORT]) {
 		const val = process.env[_g.configObj.envMap.FRONT_SERVPORT];
 		if (val !== undefined) {
 			const nval = parseInt(val, 10);

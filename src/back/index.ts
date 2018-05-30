@@ -10,7 +10,7 @@ import path from "path";
 const debug = debugM(`backend(${process.pid})`);
 const serv = http.createServer();
 
-let servPort: number = 5001; // default
+let servPort: number = 5001; // hardcoded default
 
 /**
  *  Signal handler for SIGTERM and SIGINT, attempts a clean shutdown of the server
