@@ -1,0 +1,11 @@
+{
+	"envMap": {
+		"BACK_SERVPORT": "BACKEND_PORT",
+		"FRONT_SERVPORT": "FRONTEND_PORT"
+	},
+
+	"defaults": {
+		"BACK_SERVPORT": 5000,
+		"FRONT_SERVPORT": 8000
+	}
+}

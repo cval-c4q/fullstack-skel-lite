@@ -16,7 +16,15 @@ The toplevel ```build/index.js``` is a Node.js script that is used to start both
 
 There is a single toplevel ```package.json``` where stack-wide dependencies are centralized and made visible to both services and the Frontend App. This avoids unnecessary duplication, reduces build times as well as standardizes the tooling among all components.
 
+### ```config.json``` organization
+The purpose of this file is not to directly supply configuration data but rather to map the required settings to corresponding system environment variable names which will vary across delopyment environments. Hardcoded defaults are also provided as fallbacks in case the referenced environment variables are either undefined or malformed.
+
+This permits applications to:
+	* Easily readapt to different deployment environments
+	* Centralize and streamline configuration as the Application grows in complexity
+
 ### ```src/``` subdirectory structure
+* ```config.json```: toplevel configuration
 * ```src/index.ts```: toplevel entry point
 * ```src/back/```
 	* ```index.ts```: Backend service, entry point

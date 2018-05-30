@@ -98,6 +98,15 @@ let rootConf = {
 	module: {
 		rules: [ tsLintRule, tsJsxRule ],
 	},
+	plugins: [
+		new CopyWebpackPlugin([
+			{
+				from: "config.json",
+				to: "./",
+				context: "src/",
+			},
+		]),
+	],
 };
 
 

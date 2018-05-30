@@ -6,6 +6,7 @@
 import child_process from "child_process";
 import clone from "clone";
 import debugM from "debug";
+import fs from "fs";
 import path from "path";
 
 const debug = debugM(`toplevel(${process.pid})`);
@@ -21,10 +22,22 @@ const _g: {
 	serverEnv: object,
 	clientLastStart: number,
 	serverLastStart: number,
+	clientPort: number,
+	serverPort: number,
 	failureTally: Map<string, number[]>,
 	client?: child_process.ChildProcess,
 	server?: child_process.ChildProcess,
 	configDir: string,
+	configObj?: {
+		envMap: {
+			BACK_SERVPORT: string | undefined,
+			FRONT_SERVPORT: string | undefined,
+		},
+		defaults: {
+			BACK_SERVPORT: number,
+			FRONT_SERVPORT: number,
+		},
+	},
 } = {
 	clientEnv: clone(process.env),
 	clientLastStart: -1,
@@ -34,7 +47,55 @@ const _g: {
 	optServer: true,
 	serverEnv: clone(process.env),
 	serverLastStart: -1,
+	clientPort: 5000,	// hardcoded default
+	serverPort: 8000,	// hardcoded default
 };
+
+process.chdir(path.dirname(process.argv[1]));
+debug("working directory: " + process.cwd());
+
+/*
+ * Read-in configuration before handling any command line arguments
+ * so the latter will override the former
+ */
+try {
+	fs.accessSync(path.resolve(_g.configDir, "config.json"), fs.constants.F_OK | fs.constants.R_OK);
+	const cfg = fs.readFileSync(path.resolve(_g.configDir, "config.json"), "utf-8");
+	if (!(_g.configObj = JSON.parse(cfg))) {
+		throw new Error("Invalid configuration object."); // for typescript
+	}
+
+	// backend port
+	if (_g.configObj.envMap && _g.configObj.envMap.BACK_SERVPORT) {
+		const val = process.env[_g.configObj.envMap.BACK_SERVPORT];
+		if (val !== undefined) {
+			const nval = parseInt(val, 10);
+			_g.serverPort = Number.isNaN(nval) ? _g.serverPort : nval;
+		}
+	} else if (_g.configObj.defaults && _g.configObj.defaults.BACK_SERVPORT) {
+		const nval = _g.configObj.defaults.BACK_SERVPORT;
+		_g.serverPort = Number.isNaN(nval) ? _g.serverPort : nval;
+	}
+
+	debug("config.json: using backend TCP port setting value " + _g.serverPort);
+
+	// frontend port
+	if (_g.configObj.envMap && _g.configObj.envMap.FRONT_SERVPORT) {
+		const val = process.env[_g.configObj.envMap.FRONT_SERVPORT];
+		if (val !== undefined) {
+			const nval = parseInt(val, 10);
+			_g.clientPort = Number.isNaN(nval) ? _g.clientPort : nval;
+		}
+	} else if (_g.configObj.defaults && _g.configObj.defaults.FRONT_SERVPORT) {
+		const nval = _g.configObj.defaults.FRONT_SERVPORT;
+		_g.clientPort = Number.isNaN(nval) ? _g.clientPort : nval;
+	}
+
+	debug("config.json: using frontend TCP port setting value ", _g.clientPort);
+
+} catch (err) {
+	debug("NOT using 'config.json':", err.toString());
+}
 
 if (process.argv.length > 2) {
 	process.argv.slice(2).forEach((arg: string) => {
@@ -51,15 +112,15 @@ if (process.argv.length > 2) {
 				break;
 			default:
 				process.stdout.write(`
-Usage: ${path.basename(process.argv[1])} [OPTION]...
+					Usage: ${path.basename(process.argv[1])} [OPTION]...
 
-OPTIONS:
-  -C
-  --client-only    Do not initialize backend service
+					OPTIONS:
+					-C
+					--client-only    Do not initialize backend service
 
-  -S
-  --server-only    Do not initialize frontend service
-`);
+					-S
+					--server-only    Do not initialize frontend service
+					`);
 				if (arg === "--help") {
 					process.exit(0);
 				}
@@ -130,7 +191,8 @@ function panicAbort() {
 
 		_g.clientLastStart = Date.now();
 		_g.client = child_process.fork(path.resolve(process.argv[1], "../front/index.js"),
-			undefined, {
+			[ "--port", _g.clientPort.toString() ],
+			{
 				env : _g.clientEnv,
 			});
 
@@ -151,7 +213,8 @@ function panicAbort() {
 
 		_g.serverLastStart = Date.now();
 		_g.server = child_process.fork(path.resolve(process.argv[1], "../back/index.js"),
-			undefined, {
+			[ "--port", _g.serverPort.toString() ],
+			{
 				env : _g.serverEnv,
 			});
 
