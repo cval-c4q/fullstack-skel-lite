@@ -42,6 +42,7 @@ let frontServiceConf = {
 let frontAppConf = {
 	target: "web",
 	entry: "./src/app/index.tsx",
+	devtool: "inline-source-map",
 	output: {
 		path: path.resolve(__dirname, "build/front/static"),
 		filename: 'app.js',
@@ -50,7 +51,14 @@ let frontAppConf = {
 		extensions: [ ".ts", ".tsx", ".js", ".jsx" ],
 	},
 	module: {
-		rules: [ tsLintRule, tsJsxRule ],
+		rules: [
+			tsLintRule,
+			tsJsxRule,
+			{
+				test: /\.css$/,
+				use: [ 'style-loader', 'css-loader' ],
+			},
+		],
 	},
 	plugins: [
 		new HtmlWebpackPlugin(),

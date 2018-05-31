@@ -1,6 +1,8 @@
 
 import React from "react";
 import ReactDOM from "react-dom";
-import AppRoot from "./AppRoot";
+import { BrowserRouter } from "react-router-dom";
+import { default as PuzzleMain } from "./AppRoot";
 
-ReactDOM.render(<AppRoot />, document.querySelector("body"));
+ReactDOM.render(<BrowserRouter><PuzzleMain /></BrowserRouter>,
+	document.querySelector("body"));
