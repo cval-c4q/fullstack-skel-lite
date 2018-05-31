@@ -19,9 +19,9 @@ There is a single toplevel ```package.json``` where stack-wide dependencies are 
 ### ```config.json``` organization
 The purpose of this file is not to directly supply configuration data but rather to map the required settings to corresponding system environment variable names which will vary across delopyment environments. Hardcoded defaults are also provided as fallbacks in case the referenced environment variables are either undefined or malformed.
 
-This permits applications to:
-	* Easily readapt to different deployment environments
-	* Centralize and streamline configuration as the Application grows in complexity
+This permits a Fullstack Application to:
+* Easily readapt to different deployment environments
+* Centralize and streamline configuration as it grows in complexity
 
 ### ```src/``` subdirectory structure
 * ```config.json```: toplevel configuration

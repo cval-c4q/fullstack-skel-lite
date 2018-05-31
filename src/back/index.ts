@@ -32,8 +32,8 @@ debug("working directory: " + process.cwd());
 const opts = process.argv.slice(2);
 for (let idx = 0; idx < opts.length; idx++) {
 	switch (true) {
-		case opts[idx] == "--port":
-		case opts[idx] == "-P":
+		case opts[idx] === "--port":
+		case opts[idx] === "-P":
 			if (idx >= opts.length - 1) {
 				process.stderr.write(`Option ${opts[idx]} expects an argument.\n`);
 				process.exit(255);
