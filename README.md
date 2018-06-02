@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/cval-c4q/fullstack-skel-lite.svg?branch=master)](https://travis-ci.org/cval-c4q/fullstack-skel-lite)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/31ecdfa9ca7a43d887f3ac12c3aeba40)](https://www.codacy.com/app/cval-c4q/fullstack-skel-lite?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=cval-c4q/fullstack-skel-lite&amp;utm_campaign=Badge_Grade)
 # fullstack-skel-lite
 Fullstack App template built from scratch to be clean and lightweight.
 

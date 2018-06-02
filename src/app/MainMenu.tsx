@@ -2,8 +2,8 @@
 import React from "react";
 import Media from "react-media";
 
-import { CanvasRenderWorkerArgs } from "./AppRoot";
-import { CanvasRenderWorkerProps } from "./AppRoot";
+import { ICanvasRenderWorkerArgs } from "./AppRoot";
+import { ICanvasRenderWorkerProps } from "./AppRoot";
 
 const LAYOUT_HORZ = Symbol("CCHorizentalLayout");
 const LAYOUT_VERT = Symbol("CCVerticalLayout");
@@ -22,12 +22,12 @@ let _g: {
 	},
 };
 
-export default class MainMenu extends React.Component<CanvasRenderWorkerProps> {
+export default class MainMenu extends React.Component<ICanvasRenderWorkerProps> {
 	state: {
 		layout: Symbol,
 	}
 
-	constructor(props: CanvasRenderWorkerProps) {
+	constructor(props: ICanvasRenderWorkerProps) {
 		super(props);
 		
 		this.state = {
@@ -51,7 +51,7 @@ export default class MainMenu extends React.Component<CanvasRenderWorkerProps> {
 		);
 	}
 
-	renderWorker(args: CanvasRenderWorkerArgs) {
+	renderWorker(args: ICanvasRenderWorkerArgs) {
 		args.ctx.save();
 		if (_g.lastTime === undefined)
 			_g.lastTime = args.timeStamp;
