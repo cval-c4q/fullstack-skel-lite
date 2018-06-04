@@ -14,14 +14,15 @@ import "./styles.css";
  *   * should call detachRenderWorker() when not refraining from real-time rendering or when unmounting
  */
 export interface ICanvasRenderWorkerProps {
-	attachRenderWorker: Function;
-	detachRenderWorker: Function;
+	attachRenderWorker: (workerFn: Function) => void;
+	detachRenderWorker: (workerFn: Function) => void;
 }
 export interface ICanvasRenderWorkerArgs {
 	timeStamp: number;
 	canvas: HTMLCanvasElement;
-	ctx: CanvasRenderingContext2D;
+	ctx: CanvasRenderingContext2D | null;
 }
+export type RenderWorker = (args: ICanvasRenderWorkerArgs) => void;
 
 export default class extends React.Component {
 	private config: {
@@ -29,10 +30,10 @@ export default class extends React.Component {
 	};
 
 	private renderEngine: {
-		canvas: HTMLCanvasElement | null,
+		canvas: HTMLCanvasElement,
 		ctx: CanvasRenderingContext2D | null,
 		renderDriver: (ts: number) => void,
-		renderWorkers: Function[],
+		renderWorkers: RenderWorker[],
 	};
 
 	private FPSMeter: {
@@ -49,9 +50,10 @@ export default class extends React.Component {
 			showFPS: true,
 		};
 
+		const cvas = this.refs.cvas as HTMLCanvasElement;
 		this.renderEngine = {
-			canvas: null,
-			ctx: null,
+			canvas: cvas,
+			ctx: cvas.getContext("2d"),
 			renderDriver: this.renderDriver.bind(this),
 			renderWorkers: [],
 		};
@@ -64,7 +66,7 @@ export default class extends React.Component {
 		};
 	}
 
-	public attachRenderWorker(workerFunc: Function) {
+	public attachRenderWorker(workerFunc: RenderWorker) {
 		if (typeof workerFunc !== "function") {
 			throw new Error("attachRenderWorker expects a function argument, got:" + typeof workerFunc);
 		} else if (this.renderEngine.renderWorkers.indexOf(workerFunc) === -1) {
@@ -73,7 +75,7 @@ export default class extends React.Component {
 		console.log(this.renderEngine.renderWorkers.length, "active renderEnginee workers.");
 	}
 
-	public detachRenderWorker(workerFunc: Function) {
+	public detachRenderWorker(workerFunc: RenderWorker) {
 		if (typeof workerFunc !== "function") {
 			throw new Error("detachRenderWorker expects a function argument, got:" + typeof workerFunc);
 		} else if (this.renderEngine.renderWorkers.indexOf(workerFunc) !== -1) {
@@ -147,7 +149,7 @@ export default class extends React.Component {
 			}
 		}
 
-		const renderArgs = {
+		const renderArgs: ICanvasRenderWorkerArgs = {
 			canvas: this.renderEngine.canvas,
 			ctx: this.renderEngine.ctx,
 			timeStamp,
