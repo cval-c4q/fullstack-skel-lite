@@ -53,7 +53,7 @@ export default class extends React.Component {
 		const cvas = this.refs.cvas as HTMLCanvasElement;
 		this.renderEngine = {
 			canvas: cvas,
-			ctx: cvas.getContext("2d"),
+			ctx: cvas ? cvas.getContext("2d") : null,
 			renderDriver: this.renderDriver.bind(this),
 			renderWorkers: [],
 		};
