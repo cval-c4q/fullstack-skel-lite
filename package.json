@@ -7,7 +7,7 @@
     "test": "webpack",
     "build": "webpack --mode production",
     "dev-build": "webpack --mode development",
-    "start": "DEBUG='*' node build/index.js"
+    "start": "[ ! -f build/index.js ] && npm run build; DEBUG='*' node build/index.js"
   },
   "repository": {
     "type": "git",
