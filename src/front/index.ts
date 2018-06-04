@@ -3,12 +3,10 @@
  */
 
 import debugM from "debug";
-import fs from "fs";
 import http from "http";
 import net from "net";
 import path from "path";
 import send from "send";
-import parseUrl from "parseurl";
 
 const debug = debugM(`frontend(${process.pid})`);
 const serv = http.createServer();
@@ -73,7 +71,7 @@ serv.on("request", (req: http.IncomingMessage, res: http.ServerResponse) => {
 
 	req.on("end", () => {
 		try {
-			let fname = !req || !req.url || req.url === "/" ? "index.html" : req.url.slice(1);
+			const fname = !req || !req.url || req.url === "/" ? "index.html" : req.url.slice(1);
 			// const srcFile = fs.createReadStream(path.resolve(process.cwd(), "static/" + fname), "utf-8");
 			// srcFile.pipe(res);
 			send(req, fname, { root: path.resolve(process.cwd(), "static/") })

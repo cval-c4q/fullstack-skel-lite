@@ -9,14 +9,14 @@ const CopyWebpackPlugin = require("copy-webpack-plugin");
 const tsJsxRule = {
 	test: /\.tsx?$/,
 	exclude: /node_modules/,
-	loader: 'ts-loader',
+	loader: "ts-loader",
 };
 
 const tsLintRule = {
 	test: /\.tsx?$/,
-	enforce: 'pre',
+	enforce: "pre",
 	exclude: /node_modules/,
-	loader: 'tslint-loader',
+	loader: "tslint-loader",
 	options: {
 	},
 };
@@ -25,11 +25,11 @@ const tsLintRule = {
  *  Webpack target: frontend service
  */
 let frontServiceConf = {
-	target: 'node',
-	entry: './src/front/index.ts',
+	target: "node",
+	entry: "./src/front/index.ts",
 	output: {
 		path: path.resolve(__dirname, "build/front"),
-		filename: 'index.js',
+		filename: "index.js",
 	},
 	module: {
 		rules: [ tsLintRule, tsJsxRule ],
@@ -45,7 +45,7 @@ let frontAppConf = {
 	devtool: "inline-source-map",
 	output: {
 		path: path.resolve(__dirname, "build/front/static"),
-		filename: 'app.js',
+		filename: "app.js",
 	},
 	resolve: {
 		extensions: [ ".ts", ".tsx", ".js", ".jsx" ],
@@ -56,7 +56,7 @@ let frontAppConf = {
 			tsJsxRule,
 			{
 				test: /\.css$/,
-				use: [ 'style-loader', 'css-loader' ],
+				use: [ "style-loader", "css-loader" ],
 			},
 		],
 	},
@@ -82,11 +82,11 @@ let frontAppConf = {
  *  Webpack target: backend service
  */
 let backServiceConf = {
-	target: 'node',
-	entry: './src/back/index.ts',
+	target: "node",
+	entry: "./src/back/index.ts",
 	output: {
 		path: path.resolve(__dirname, "build/back"),
-		filename: 'index.js',
+		filename: "index.js",
 	},
 	module: {
 		rules: [ tsLintRule, tsJsxRule ],
@@ -97,11 +97,11 @@ let backServiceConf = {
  *  Webpack target: toplevel index.js
  */
 let rootConf = {
-	target: 'node',
-	entry: './src/index.ts',
+	target: "node",
+	entry: "./src/index.ts",
 	output: {
 		path: path.resolve(__dirname, "build"),
-		filename: 'index.js',
+		filename: "index.js",
 	},
 	module: {
 		rules: [ tsLintRule, tsJsxRule ],
